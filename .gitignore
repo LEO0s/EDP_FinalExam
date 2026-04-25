@@ -1,0 +1,14 @@
+node_modules/
+.git/
+.DS_Store
+.env
+.env.local
+dist/
+build/
+*.log
+.vscode/
+.idea/
+pokedex-backend/node_modules/
+pokedex-frontend/node_modules/
+pokedex-backend/dist/
+pokedex-frontend/build/

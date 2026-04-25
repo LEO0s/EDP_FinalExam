@@ -1,0 +1,164 @@
+.pokemon-details {
+  width: 100%;
+}
+
+.details-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
+}
+
+.details-header h2 {
+  font-size: 2em;
+  text-transform: capitalize;
+  color: #333;
+  margin: 15px 0;
+}
+
+.main-sprite {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  padding: 10px;
+  object-fit: contain;
+}
+
+.badge {
+  display: inline-block;
+  background-color: #ff9800;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.detail-item {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border-left: 4px solid #667eea;
+}
+
+.detail-item h4 {
+  color: #667eea;
+  margin: 0 0 10px 0;
+  font-size: 0.95em;
+}
+
+.detail-item p {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.details-section {
+  margin: 25px 0;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.details-section h3 {
+  color: #667eea;
+  margin-bottom: 12px;
+  font-size: 1.1em;
+}
+
+.details-section p {
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+  font-size: 0.95em;
+}
+
+.abilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ability-tag {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  text-transform: capitalize;
+  border: 1px solid #1976d2;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-name {
+  font-weight: bold;
+  text-transform: capitalize;
+  min-width: 80px;
+  color: #333;
+  font-size: 0.9em;
+}
+
+.stat-bar {
+  flex: 1;
+  height: 20px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.3s ease;
+}
+
+.stat-value {
+  min-width: 30px;
+  text-align: right;
+  font-weight: bold;
+  color: #333;
+  font-size: 0.9em;
+}
+
+audio {
+  margin-top: 10px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .main-sprite {
+    width: 120px;
+    height: 120px;
+  }
+
+  .details-header h2 {
+    font-size: 1.5em;
+  }
+}

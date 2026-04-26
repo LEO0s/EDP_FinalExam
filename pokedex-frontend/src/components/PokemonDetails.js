@@ -1,11 +1,19 @@
 import React from 'react';
+import { getSpriteUrl, POKEMON_PLACEHOLDER } from '../utils/placeholders';
 import './PokemonDetails.css';
 
 function PokemonDetails({ pokemon }) {
   return (
     <div className="pokemon-details">
       <div className="details-header">
-        <img src={pokemon.sprite} alt={pokemon.name} className="main-sprite" />
+        <img 
+          src={getSpriteUrl(pokemon.sprite)} 
+          alt={pokemon.name} 
+          className="main-sprite"
+          onError={(e) => {
+            e.target.src = POKEMON_PLACEHOLDER;
+          }}
+        />
         <h2>{pokemon.name}</h2>
         {pokemon.isCustom && <span className="badge">Custom Pokémon</span>}
       </div>

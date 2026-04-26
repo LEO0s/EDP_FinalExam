@@ -1,4 +1,5 @@
 import React from 'react';
+import { getSpriteUrl, POKEMON_PLACEHOLDER } from '../utils/placeholders';
 import './PokemonList.css';
 
 function PokemonList({ pokemon, onSelect, selectedId }) {
@@ -14,7 +15,13 @@ function PokemonList({ pokemon, onSelect, selectedId }) {
             }`}
             onClick={() => onSelect(poke)}
           >
-            <img src={poke.sprite} alt={poke.name} />
+            <img 
+              src={getSpriteUrl(poke.sprite)} 
+              alt={poke.name} 
+              onError={(e) => {
+                e.target.src = POKEMON_PLACEHOLDER;
+              }}
+            />
             <p className="pokemon-name">{poke.name}</p>
             {poke.isCustom && <span className="custom-badge">Custom</span>}
           </div>

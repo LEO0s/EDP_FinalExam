@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getSpriteUrl, POKEMON_PLACEHOLDER } from '../utils/placeholders';
 import './Forms.css';
 
 function CreatePokemonForm({ onSubmit }) {
@@ -158,6 +159,18 @@ function CreatePokemonForm({ onSubmit }) {
           onChange={handleChange}
           placeholder="https://example.com/image.png"
         />
+        <div className="sprite-preview">
+          <p className="preview-label">Preview:</p>
+          <img 
+            src={getSpriteUrl(formData.sprite)} 
+            alt="sprite-preview" 
+            onError={(e) => {
+              e.target.src = POKEMON_PLACEHOLDER;
+            }}
+            className="preview-image"
+          />
+          {!formData.sprite && <p className="placeholder-note">(Placeholder will be used)</p>}
+        </div>
       </div>
 
       <div className="stats-section">

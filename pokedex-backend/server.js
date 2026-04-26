@@ -9,9 +9,10 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// In-memory storage for custom Pokémon and deleted Pokémon IDs
+// In-memory storage for custom Pokémon, deleted Pokémon IDs, and edited API Pokémon
 let customPokemon = [];
 let deletedPokemonIds = []; // Track deleted Pokémon (both API and custom)
+let editedApiPokemon = {}; // Store edits to API Pokémon: { id: { changes } }
 
 // PokéAPI base URL
 const POKEAPI_BASE = 'https://pokeapi.co/api/v2';
@@ -95,6 +96,17 @@ app.get('/api/pokemon/:id', async (req, res) => {
       isCustom: false
     };
 
+    // Apply any edits to this API Pokémon
+    if (editedApiPokemon[id]) {
+      const edits = editedApiPokemon[id];
+      if (edits.name) details.name = edits.name;
+      if (edits.description) details.description = edits.description;
+      if (edits.weight !== undefined) details.weight = edits.weight;
+      if (edits.height !== undefined) details.height = edits.height;
+      if (edits.abilities) details.abilities = edits.abilities;
+      if (edits.baseExperience !== undefined) details.baseExperience = edits.baseExperience;
+    }
+
     res.json(details);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch Pokémon details' });
@@ -131,26 +143,49 @@ app.post('/api/pokemon', (req, res) => {
 
 // ==================== UPDATE ENDPOINT ====================
 
-// Update a custom Pokémon
+// Update a Pokémon (custom or API)
 app.patch('/api/pokemon/:id', (req, res) => {
   const { id } = req.params;
   const { name, description, weight, height, abilities, baseExperience } = req.body;
 
-  const pokemonIndex = customPokemon.findIndex(p => p.id === id);
+  // Check if it's a custom Pokémon
+  const customIndex = customPokemon.findIndex(p => p.id === id);
 
-  if (pokemonIndex === -1) {
-    return res.status(404).json({ error: 'Pokémon not found' });
+  if (customIndex !== -1) {
+    // Update custom Pokémon
+    if (name !== undefined) customPokemon[customIndex].name = name;
+    if (description !== undefined) customPokemon[customIndex].description = description;
+    if (weight !== undefined) customPokemon[customIndex].weight = weight;
+    if (height !== undefined) customPokemon[customIndex].height = height;
+    if (abilities !== undefined) customPokemon[customIndex].abilities = Array.isArray(abilities) ? abilities : [abilities];
+    if (baseExperience !== undefined) customPokemon[customIndex].baseExperience = baseExperience;
+
+    return res.json(customPokemon[customIndex]);
   }
 
-  // Update fields
-  if (name !== undefined) customPokemon[pokemonIndex].name = name;
-  if (description !== undefined) customPokemon[pokemonIndex].description = description;
-  if (weight !== undefined) customPokemon[pokemonIndex].weight = weight;
-  if (height !== undefined) customPokemon[pokemonIndex].height = height;
-  if (abilities !== undefined) customPokemon[pokemonIndex].abilities = Array.isArray(abilities) ? abilities : [abilities];
-  if (baseExperience !== undefined) customPokemon[pokemonIndex].baseExperience = baseExperience;
+  // Check if it's an API Pokémon (numeric ID)
+  const numericId = parseInt(id);
+  if (!isNaN(numericId)) {
+    // Store edits to API Pokémon
+    if (!editedApiPokemon[numericId]) {
+      editedApiPokemon[numericId] = {};
+    }
 
-  res.json(customPokemon[pokemonIndex]);
+    if (name !== undefined) editedApiPokemon[numericId].name = name;
+    if (description !== undefined) editedApiPokemon[numericId].description = description;
+    if (weight !== undefined) editedApiPokemon[numericId].weight = weight;
+    if (height !== undefined) editedApiPokemon[numericId].height = height;
+    if (abilities !== undefined) editedApiPokemon[numericId].abilities = Array.isArray(abilities) ? abilities : [abilities];
+    if (baseExperience !== undefined) editedApiPokemon[numericId].baseExperience = baseExperience;
+
+    return res.json({
+      message: 'API Pokémon updated',
+      id: numericId,
+      edits: editedApiPokemon[numericId]
+    });
+  }
+
+  res.status(404).json({ error: 'Pokémon not found' });
 });
 
 // ==================== DELETE ENDPOINT ====================

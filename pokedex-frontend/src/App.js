@@ -181,14 +181,12 @@ function App() {
               <PokemonDetails pokemon={selectedPokemon} />
 
               <div className="action-buttons">
-                {selectedPokemon.isCustom && (
-                  <button
-                    className="edit-btn"
-                    onClick={() => setShowEditForm(!showEditForm)}
-                  >
-                    {showEditForm ? 'Cancel' : '✏️ Edit'}
-                  </button>
-                )}
+                <button
+                  className="edit-btn"
+                  onClick={() => setShowEditForm(!showEditForm)}
+                >
+                  {showEditForm ? 'Cancel' : '✏️ Edit'}
+                </button>
 
                 <button
                   className="delete-btn"
@@ -198,7 +196,7 @@ function App() {
                 </button>
               </div>
 
-              {showEditForm && selectedPokemon.isCustom && (
+              {showEditForm && (
                 <EditPokemonForm
                   pokemon={selectedPokemon}
                   onSubmit={(data) => handleUpdatePokemon(selectedPokemon.id, data)}

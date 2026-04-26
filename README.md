@@ -1,6 +1,6 @@
 # Pokédex Application
 
-IT 2241 Event-Driven Programming Final Exam
+Event-Driven Programming Final Exam
 
 ## Running
 
